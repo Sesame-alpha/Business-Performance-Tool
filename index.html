@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Business Performance Dashboard | Pula Metrics</title>
+    <!-- Bootstrap 5 + Icons + Chart.js CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="dashboard-header">
+    <div class="container">
+        <div class="d-flex flex-wrap justify-content-between align-items-center">
+            <div>
+                <h2 class="fw-semibold mb-0"><i class="bi bi-bar-chart-line-fill me-2"></i>Business Performance Dashboard</h2>
+                <p class="mb-0 mt-1 opacity-75">Real-time KPIs, trends & business intelligence | Pula (P)</p>
+            </div>
+            <div class="mt-2 mt-sm-0">
+                <span class="badge bg-light text-dark p-2"><i class="bi bi-database"></i> Live JSON data</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mb-5">
+    <!-- KPI ROW -->
+    <div class="row g-4 mb-4" id="kpiContainer">
+        <div class="col-sm-6 col-lg-3">
+            <div class="card card-kpi h-100 border-start border-primary border-4">
+                <div class="card-body">
+                    <h6 class="text-secondary mb-1"><i class="bi bi-currency-dollar"></i> Total Revenue</h6>
+                    <div class="kpi-value" id="totalRevenue">P 0</div>
+                    <small class="text-muted">actual sales</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card card-kpi h-100 border-start border-danger border-4">
+                <div class="card-body">
+                    <h6 class="text-secondary mb-1"><i class="bi bi-receipt"></i> Total Expenses</h6>
+                    <div class="kpi-value" id="totalExpenses">P 0</div>
+                    <small class="text-muted">operational costs</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card card-kpi h-100 border-start border-success border-4">
+                <div class="card-body">
+                    <h6 class="text-secondary mb-1"><i class="bi bi-graph-up"></i> Net Profit</h6>
+                    <div class="kpi-value" id="totalProfit">P 0</div>
+                    <small class="text-muted">revenue - expenses</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card card-kpi h-100 border-start border-warning border-4">
+                <div class="card-body">
+                    <h6 class="text-secondary mb-1"><i class="bi bi-bullseye"></i> Revenue vs Target</h6>
+                    <div class="kpi-value" id="revenueVsTarget">0%</div>
+                    <small><span id="targetAchieveText">Actual vs Target</span></small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FILTER SECTION -->
+    <div class="card filter-card">
+        <div class="card-body">
+            <div class="row g-3 align-items-end">
+                <div class="col-md-3">
+                    <label class="form-label fw-semibold"><i class="bi bi-building"></i> Department</label>
+                    <select id="filterDept" class="form-select"></select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-semibold"><i class="bi bi-geo-alt"></i> Region</label>
+                    <select id="filterRegion" class="form-select"></select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold"><i class="bi bi-calendar-range"></i> Period (Month Range)</label>
+                    <div class="d-flex gap-2">
+                        <select id="filterFromMonth" class="form-select"></select>
+                        <span class="align-self-center">—</span>
+                        <select id="filterToMonth" class="form-select"></select>
+                    </div>
+                </div>
+                <div class="col-md-2 d-flex gap-2">
+                    <button id="resetFiltersBtn" class="btn btn-outline-secondary w-100"><i class="bi bi-arrow-repeat"></i> Reset</button>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-12">
+                    <small class="text-muted"><i class="bi bi-info-circle"></i> Filters dynamically update KPIs, charts, and data table below.</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CHARTS SECTION -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-4">
+            <div class="card chart-card h-100">
+                <div class="card-header bg-transparent border-0 pt-3 fw-semibold">📈 Revenue Trend (Monthly)</div>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="revenueLineChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card chart-card h-100">
+                <div class="card-header bg-transparent border-0 pt-3 fw-semibold">📊 Expenses by Department</div>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="expensesBarChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card chart-card h-100">
+                <div class="card-header bg-transparent border-0 pt-3 fw-semibold">🥧 Revenue Contribution (Dept)</div>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="revenuePieChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DATA TABLE with SEARCH -->
+    <div class="card table-card">
+        <div class="card-header bg-transparent d-flex flex-wrap justify-content-between align-items-center pt-3">
+            <span class="fw-semibold"><i class="bi bi-table"></i> Detailed Business Records</span>
+            <div class="mt-2 mt-sm-0" style="min-width: 220px;">
+                <div class="input-group input-group-sm">
+                    <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                    <input type="text" id="tableSearchInput" class="form-control" placeholder="Search by date, dept, region, amount...">
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Date</th>
+                            <th>Department</th>
+                            <th>Region</th>
+                            <th>Revenue (P)</th>
+                            <th>Expenses (P)</th>
+                            <th>Profit (P)</th>
+                            <th>Target Revenue (P)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dataTableBody">
+                        <tr><td colspan="7" class="text-center text-muted">Loading data...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer bg-transparent text-muted small">
+            <i class="bi bi-database-check"></i> Data source: business_data.json | Values in Pula (P)
+        </div>
+    </div>
+    <div class="footer-note">
+        <i class="bi bi-graph-up"></i> Interactive BI Dashboard — KPIs, dynamic filters, charts & search
+    </div>
+</div>
+
+<script src="js/script.js"></script>
+</body>
+</html>
