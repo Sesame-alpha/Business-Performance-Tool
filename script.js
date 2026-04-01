@@ -292,7 +292,7 @@ function resetAllFilters() {
 // Load JSON and initialize
 async function loadDataAndInit() {
     try {
-        const response = await fetch('./data/business_data.json');
+        const response = await fetch('./business_data.json');
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const jsonData = await response.json();
         fullDataset = jsonData;
