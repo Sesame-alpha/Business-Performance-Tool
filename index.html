@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Performance Dashboard | Pula</title>
+    <!-- Bootstrap 5 + Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="dashboard-header">
+    <div class="container">
+        <h2><i class="bi bi-bar-chart-line-fill"></i> Business Performance Dashboard</h2>
+        <p>Real-time KPIs, trends & business intelligence | Pula (P)</p>
+    </div>
+</div>
+
+<div class="container">
+    <!-- KPI Row -->
+    <div class="row g-4 mb-4">
+        <div class="col-sm-6 col-lg-3">
+            <div class="card kpi-card">
+                <div class="card-body">
+                    <h6>💰 Total Revenue</h6>
+                    <div class="kpi-value" id="totalRevenue">P 0</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card kpi-card">
+                <div class="card-body">
+                    <h6>📉 Total Expenses</h6>
+                    <div class="kpi-value" id="totalExpenses">P 0</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card kpi-card">
+                <div class="card-body">
+                    <h6>📈 Net Profit</h6>
+                    <div class="kpi-value" id="totalProfit">P 0</div>
+                    <small id="profitMargin" class="text-muted">margin: 0%</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="card kpi-card">
+                <div class="card-body">
+                    <h6>🎯 Revenue vs Target</h6>
+                    <div class="kpi-value" id="revenueVsTarget">0%</div>
+                    <div class="progress mt-2" style="height: 6px;">
+                        <div id="targetProgress" class="progress-bar" style="width:0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="card filter-card mb-4">
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label>Department</label>
+                    <select id="filterDept" class="form-select">
+                        <option value="ALL">All Departments</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label>Region</label>
+                    <select id="filterRegion" class="form-select">
+                        <option value="ALL">All Regions</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label>Period (Month Range)</label>
+                    <div class="d-flex gap-2">
+                        <select id="filterFromMonth" class="form-select"></select>
+                        <span>—</span>
+                        <select id="filterToMonth" class="form-select"></select>
+                    </div>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button id="resetFiltersBtn" class="btn btn-outline-secondary w-100">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-4">
+            <div class="card chart-card">
+                <div class="card-header">📈 Revenue Trend</div>
+                <div class="card-body"><canvas id="revenueLineChart" height="200"></canvas></div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card chart-card">
+                <div class="card-header">📊 Expenses by Department</div>
+                <div class="card-body"><canvas id="expensesBarChart" height="200"></canvas></div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card chart-card">
+                <div class="card-header">🥧 Revenue Contribution</div>
+                <div class="card-body"><canvas id="revenuePieChart" height="200"></canvas></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data Table -->
+    <div class="card table-card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span>📋 Detailed Business Records</span>
+            <input type="text" id="tableSearch" class="form-control form-control-sm w-50" placeholder="🔍 Search...">
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive" style="max-height: 400px;">
+                <table class="table table-sm table-hover mb-0">
+                    <thead class="sticky-top bg-light">
+                        <tr><th>Date</th><th>Department</th><th>Region</th><th>Revenue (P)</th><th>Expenses (P)</th><th>Profit (P)</th><th>Target (P)</th></tr>
+                    </thead>
+                    <tbody id="tableBody"><tr><td colspan="7" class="text-center">Loading data...</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer text-muted small">Data source: business_data.json | Values in Pula (P)</div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+  </html>
