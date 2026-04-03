@@ -1,0 +1,35 @@
+body {
+    background: #f4f7fc;
+    font-family: 'Segoe UI', system-ui;
+}
+.dashboard-header {
+    background: linear-gradient(135deg, #1a2a3a, #0f1a24);
+    color: white;
+    padding: 1.5rem 0;
+    margin-bottom: 2rem;
+}
+.kpi-card {
+    border: none;
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transition: transform 0.2s;
+}
+.kpi-card:hover { transform: translateY(-3px); }
+.kpi-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+.filter-card, .chart-card, .table-card {
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    margin-bottom: 1.5rem;
+    background: white;
+}
+.sticky-top {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+@media (max-width: 768px) {
+    .kpi-value { font-size: 1.3rem; }
+}
